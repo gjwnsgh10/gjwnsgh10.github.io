@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>가위바위보 게임</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-top: 70px;
+    }
+
+    button {
+      font-size: 24px;
+      margin: 10px;
+      padding: 15px 30px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #result {
+      font-size: 24px;
+      margin-top: 40px;
+      font-weight: bold;
+      line-height: 1.8;
+    }
+
+    .win { color: green; }
+    .lose { color: red; }
+    .draw { color: gray; }
+
+    #bottom-info {
+      margin-top: 60px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    #scoreboard {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    #winrate {
+      margin-top: 5px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    #reset-btn {
+      margin-top: 10px;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      background-color: #eee;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #reset-btn:hover {
+      background-color: #ddd;
+    }
+
+    #byline {
+      position: absolute;
+      top: 10px;
+      left: 15px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div id="byline">by Heojunho</div>
+
+  <h1>가위✌️ 바위✊ 보✋</h1>
+
+  <button onclick="play('가위')">가위</button>
+  <button onclick="play('바위')">바위</button>
+  <button onclick="play('보')">보</button>
+
+  <div id="result"></div>
+
+  <div id="bottom-info">
+    <div id="scoreboard">승: 0 | 패: 0 | 무승부: 0</div>
+    <div id="winrate">승률: 0%</div>
+    <button id="reset-btn" onclick="resetScore()">점수 리셋</button>
+  </div>
+
+  <script>
+    let win = 0;
+    let lose = 0;
+    let draw = 0;
+
+    function play(user) {
+      const choices = ['가위', '바위', '보'];
+      const computer = choices[Math.floor(Math.random() * 3)];
+
+      let resultMessage = '';
+      let resultClass = '';
+
+      if (user === computer) {
+        resultMessage = '무승부! 😐';
+        resultClass = 'draw';
+        draw++;
+      } else if (
+        (user === '가위' && computer === '보') ||
+        (user === '바위' && computer === '가위') ||
+        (user === '보' && computer === '바위')
+      ) {
+        resultMessage = '당신이 이겼어요! 🎉';
+        resultClass = 'win';
+        win++;
+      } else {
+        resultMessage = '당신이 졌어요... 😢';
+        resultClass = 'lose';
+        lose++;
+      }
+
+      document.getElementById('result').innerHTML =
+        `컴퓨터: ${computer}<br><span class="${resultClass}">${resultMessage}</span>`;
+
+      updateScore();
+    }
+
+    function updateScore() {
+      const total = win + lose + draw;
+      const winrate = total === 0 ? 0 : Math.round((win / total) * 100);
+
+      document.getElementById('scoreboard').innerText =
+        `승: ${win} | 패: ${lose} | 무승부: ${draw}`;
+
+      document.getElementById('winrate').innerText =
+        `승률: ${winrate}%`;
+    }
+
+    function resetScore() {
+      win = 0;
+      lose = 0;
+      draw = 0;
+      updateScore();
+    }
+  </script>
+</body>
+</html>
+
